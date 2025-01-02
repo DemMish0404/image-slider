@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import {ArrowBigLeft, ArrowBigRight} from 'lucide-react'
+import {ArrowBigLeft, ArrowBigRight, Circle, CircleDot} from 'lucide-react'
 
 type imgUrlsType ={
   carImages: string[]
@@ -36,9 +36,19 @@ function App({carImages}: imgUrlsType) {
   
   return (
     <div className='image-slider'>
-      <img className='image-slider__current-image' src={carImages[currentImageIndex]} alt="действующий слайд на котором вы находитесь" />
+      <div className='image-slider__images' style={{translate: `${-100 * currentImageIndex}%`}}>
+        {carImages.map((imgUrl,index)=>  <img className='image-slider__image' key={imgUrl} src={imgUrl} alt="действующий слайд на котором вы находитесь" />)}
+      </div>
+      
       <button className='image-slider__button left' onClick={showThePreviousSlide} ><ArrowBigLeft/></button>
       <button className='image-slider__button right' onClick={showTheNextSlide} ><ArrowBigRight/></button>
+
+
+      <div className="image-slider__bullets">
+        {
+          carImages.map((_,index)=> <button className='image-slider__bullet-btn' onClick={()=> setCurrentImageIndex(index)}>{index === currentImageIndex ? <CircleDot/> : <Circle/> }</button>)
+        }
+      </div>
     </div>
   )
 }
