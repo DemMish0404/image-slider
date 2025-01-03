@@ -5,7 +5,10 @@ import './App.css'
 import {ArrowBigLeft, ArrowBigRight, Circle, CircleDot} from 'lucide-react'
 
 type imgUrlsType ={
-  carImages: string[]
+  carImages: {
+    url: string,
+    alt: string,
+  }[]
 }
 
 function App({carImages}: imgUrlsType) {
@@ -35,20 +38,23 @@ function App({carImages}: imgUrlsType) {
   }
   
   return (
+    
     <div className='image-slider'>
+      <a href="#end-of-the-slider-block" className='skip-link'>пропустить блок со слайдером</a>
       <div className='image-slider__images' style={{translate: `${-100 * currentImageIndex}%`}}>
-        {carImages.map((imgUrl,index)=>  <img className='image-slider__image' key={imgUrl} src={imgUrl} alt="действующий слайд на котором вы находитесь" />)}
+        {carImages.map(({url, alt},index)=>  <img className='image-slider__image' aria-hidden={ index !== currentImageIndex } key={url} src={url} alt={alt} />)}
       </div>
       
-      <button className='image-slider__button left' onClick={showThePreviousSlide} ><ArrowBigLeft/></button>
-      <button className='image-slider__button right' onClick={showTheNextSlide} ><ArrowBigRight/></button>
+      <button className='image-slider__button left' onClick={showThePreviousSlide} ><ArrowBigLeft aria-hidden /></button>
+      <button className='image-slider__button right' onClick={showTheNextSlide} ><ArrowBigRight aria-hidden /></button>
 
 
       <div className="image-slider__bullets">
         {
-          carImages.map((_,index)=> <button className='image-slider__bullet-btn' onClick={()=> setCurrentImageIndex(index)}>{index === currentImageIndex ? <CircleDot/> : <Circle/> }</button>)
+          carImages.map((_,index)=> <button aria-label={`перейти на картинку номер ${index + 1}`} className='image-slider__bullet-btn' onClick={()=> setCurrentImageIndex(index)}>{index === currentImageIndex ? <CircleDot aria-hidden /> : <Circle aria-hidden /> }</button>)
         }
       </div>
+      <div id='end-of-the-slider-block'></div>
     </div>
   )
 }
